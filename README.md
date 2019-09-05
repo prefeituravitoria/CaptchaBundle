@@ -202,12 +202,10 @@ The widget support the standard Symfony theming, see the [documentation](http://
 The default rendering is:
 
 ```html
-{% block captcha_widget %}
-{% spaceless %}
+{%- block captcha_widget -%}
     <img src="{{ captcha_code }}" title="captcha" width="{{ captcha_width }}" height="{{ captcha_height }}" />
     {{ form_widget(form) }}
-{% endspaceless %}
-{% endblock %}
+{%- endblock -%}
 ```
 
 Image creation

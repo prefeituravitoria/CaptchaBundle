@@ -2,7 +2,8 @@
 
 namespace Gregwar\CaptchaBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Gregwar\CaptchaBundle\Generator\CaptchaGenerator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -11,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  * @author Jeremy Livingston <jeremy.j.livingston@gmail.com>
  */
-class CaptchaController extends Controller
+class CaptchaController extends AbstractController
 {
     /**
      * Action that is used to generate the captcha, save its code, and stream the image
@@ -22,7 +23,7 @@ class CaptchaController extends Controller
      *
      * @throws NotFoundHttpException
      */
-    public function generateCaptchaAction($key)
+    public function generateCaptcha(CaptchaGenerator $generator, $key)
     {
         $options = $this->container->getParameter('gregwar_captcha.config');
         $session = $this->get('session');
@@ -39,9 +40,6 @@ class CaptchaController extends Controller
         if (!$isOk) {
             return $this->error($options);
         }
-
-        /* @var \Gregwar\CaptchaBundle\Generator\CaptchaGenerator $generator */
-        $generator = $this->container->get('gregwar_captcha.generator');
 
         $persistedOptions = $session->get($key, array());
         $options = array_merge($options, $persistedOptions);
